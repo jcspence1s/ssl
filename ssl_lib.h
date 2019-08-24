@@ -12,4 +12,7 @@ SSL_load_cert(SSL_CTX *ctx, char *cert, char *key);
 void
 SSL_coms(SSL *ssl);
 
+SSL_CTX *
+SSL_init_client_CTX(void);
+
 #endif

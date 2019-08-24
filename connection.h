@@ -4,4 +4,7 @@
 int 
 start_server(int port);
 
+int
+connect_server(char *ip, int port);
+
 #endif

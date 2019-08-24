@@ -53,10 +53,31 @@ SSL_coms(SSL *ssl)
 	int fd = 0;
 	int bytes = 0;
 
+	SSL_accept(ssl);
+	printf("SSL %sNULL\n", ssl ? "is not " : "is ");
 	bytes = SSL_read(ssl, buff,  sizeof(buff));
 	buff[bytes] = '\0';
+	printf("Recieved: %s\n", buff);
 	SSL_write(ssl, buff, strlen(buff));
 	fd = SSL_get_fd(ssl);
 	SSL_free(ssl);
 	close(fd);
+}
+
+SSL_CTX *
+SSL_init_client_CTX(void)
+{
+	const SSL_METHOD *method;
+	SSL_CTX *ctx;
+
+	OpenSSL_add_all_algorithms();
+	SSL_load_error_strings();
+	method = TLSv1_2_client_method();
+	ctx = SSL_CTX_new(method);
+	if(NULL == ctx)
+	{
+		ERR_print_errors_fp(stderr);
+		_exit(1);
+	}
+	return ctx;
 }
